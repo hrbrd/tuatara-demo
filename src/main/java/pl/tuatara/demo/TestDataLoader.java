@@ -8,6 +8,8 @@ import pl.tuatara.demo.dao.UserRepository;
 import pl.tuatara.demo.model.entity.Company;
 import pl.tuatara.demo.model.entity.User;
 
+import java.util.Arrays;
+
 @Component
 public class TestDataLoader implements ApplicationRunner {
 
@@ -19,7 +21,6 @@ public class TestDataLoader implements ApplicationRunner {
         this.companyRepository = companyRepository;
     }
 
-
     @Override
     public void run(ApplicationArguments args) throws Exception {
         userRepository.save(new User("jtracz", "Janusz", "Tracz"));
@@ -28,7 +29,10 @@ public class TestDataLoader implements ApplicationRunner {
         userRepository.save(new User("cpazura", "Cezary", "Pazura"));
         userRepository.save(new User("blinda", "Bogusław", "Linda"));
 
-        companyRepository.save(new Company("IBM", 10.0, 10.0));
+
+        Company c = new Company("IBM", 10.0, 10.0);
+        c.setUsers(Arrays.asList(new User("jtracz", "Janusz", "Tracz")));
+        companyRepository.save(c);
         companyRepository.save(new Company("Tuatara", 20.0, 20.0));
         companyRepository.save(new Company("Google", 30.0, 30.0));
         companyRepository.save(new Company("Microsoft", 40.0, 40.0));

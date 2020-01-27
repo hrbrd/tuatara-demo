@@ -1,6 +1,5 @@
 package pl.tuatara.demo.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,15 +13,18 @@ public class CompanyController {
 
     private CompanyService companyService;
 
-    @Autowired
     public CompanyController(CompanyService companyService) {
         this.companyService = companyService;
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void create(@RequestBody CompanyDto company) throws CompanyAlreadyExistsException {
         companyService.create(company);
+    }
+
+    @PutMapping("/{name}/assign/{username}")
+    public void assignUser(@PathVariable String name, @PathVariable String username) {
+        companyService.assignUser(name, username);
     }
 
     @ExceptionHandler(CompanyAlreadyExistsException.class)

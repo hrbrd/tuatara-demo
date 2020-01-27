@@ -2,6 +2,8 @@ package pl.tuatara.demo.model.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.List;
 
 @Entity(name = "users")
 public class User {
@@ -11,6 +13,9 @@ public class User {
 
     private String firstName;
     private String lastName;
+
+    @ManyToMany
+    private List<Company> companies;
 
     public User() {}
 
@@ -42,5 +47,13 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<Company> getCompanies() {
+        return companies;
+    }
+
+    public void setCompanies(List<Company> companies) {
+        this.companies = companies;
     }
 }

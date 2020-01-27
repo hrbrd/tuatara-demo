@@ -2,6 +2,8 @@ package pl.tuatara.demo.model.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.List;
 
 @Entity(name = "companies")
 public class Company {
@@ -10,6 +12,9 @@ public class Company {
 
     private Double latitude;
     private Double longitude;
+
+    @ManyToMany
+    private List<User> users;
 
     public Company() {
 
@@ -43,5 +48,13 @@ public class Company {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }
