@@ -3,6 +3,7 @@ package pl.tuatara.demo.service;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.LatLng;
 import org.springframework.stereotype.Service;
+import pl.tuatara.demo.converter.CompanyConverter;
 import pl.tuatara.demo.dao.CompanyRepository;
 import pl.tuatara.demo.dao.UserRepository;
 import pl.tuatara.demo.model.dto.CompanyDto;
@@ -20,23 +21,25 @@ public class CompanyService {
     private CompanyRepository companyRepository;
     private UserRepository userRepository;
     private LocationFetchingService locationFetchingService;
+    private CompanyConverter companyConverter;
 
     public CompanyService(CompanyRepository companyRepository, UserRepository userRepository,
-                          LocationFetchingService locationFetchingService) {
+                          LocationFetchingService locationFetchingService, CompanyConverter companyConverter) {
         this.companyRepository = companyRepository;
         this.userRepository = userRepository;
         this.locationFetchingService = locationFetchingService;
+        this.companyConverter = companyConverter;
     }
 
     public CompanyDto get(String name) {
-        return convertToDto(companyRepository.findById(name).get());
+        return companyConverter.convertToDto(companyRepository.findById(name).get());
     }
 
     public void create(CompanyDto companyDto) throws CompanyAlreadyExistsException, InterruptedException, ApiException, IOException {
         if (companyRepository.existsById(companyDto.getName()))
             throw new CompanyAlreadyExistsException();
         LatLng location = locationFetchingService.getCompanyLocation(companyDto);
-        Company company = convertToCompany(companyDto);
+        Company company = companyConverter.convertToCompany(companyDto);
         company.setLatitude(location.lat);
         company.setLongitude(location.lng);
         companyRepository.save(company);
@@ -53,7 +56,7 @@ public class CompanyService {
     public List<CompanyDto> getAll() {
         return companyRepository.findAll()
                 .stream().map(company -> {
-                    CompanyDto companyDto = convertToDto(company);
+                    CompanyDto companyDto = companyConverter.convertToDto(company);
                     companyDto.setUsers(null);
                     return companyDto;
                 })
@@ -62,31 +65,6 @@ public class CompanyService {
 
     public void delete(String name) {
         companyRepository.deleteById(name);
-    }
-
-    private Company convertToCompany(CompanyDto companyDto) {
-        Company company = new Company();
-        company.setName(companyDto.getName());
-        company.setStreet(companyDto.getStreet());
-        company.setCity(companyDto.getCity());
-        company.setCountry(companyDto.getCountry());
-        company.setLatitude(companyDto.getLatitude());
-        company.setLongitude(companyDto.getLongitude());
-
-        return company;
-    }
-
-    private CompanyDto convertToDto(Company company) {
-        CompanyDto companyDto = new CompanyDto();
-        companyDto.setName(company.getName());
-        companyDto.setStreet(company.getStreet());
-        companyDto.setCity(company.getCity());
-        companyDto.setCountry(company.getCountry());
-        companyDto.setLatitude(company.getLatitude());
-        companyDto.setLongitude(company.getLongitude());
-        companyDto.setUsers(company.getUsers());
-
-        return companyDto;
     }
 
 }
