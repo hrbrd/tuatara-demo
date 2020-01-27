@@ -1,4 +1,4 @@
-package pl.tuatara.demo.model;
+package pl.tuatara.demo.model.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

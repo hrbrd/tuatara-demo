@@ -5,7 +5,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import pl.tuatara.demo.dao.UserRepository;
-import pl.tuatara.demo.model.User;
+import pl.tuatara.demo.model.entity.User;
 
 @Component
 public class TestDataLoader implements ApplicationRunner {
