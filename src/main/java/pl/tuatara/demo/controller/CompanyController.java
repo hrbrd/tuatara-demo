@@ -7,6 +7,8 @@ import pl.tuatara.demo.model.dto.CompanyDto;
 import pl.tuatara.demo.model.exception.CompanyAlreadyExistsException;
 import pl.tuatara.demo.service.CompanyService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/companies")
 public class CompanyController {
@@ -25,6 +27,11 @@ public class CompanyController {
     @PutMapping("/{name}/assign/{username}")
     public void assignUser(@PathVariable String name, @PathVariable String username) {
         companyService.assignUser(name, username);
+    }
+
+    @GetMapping
+    public List<CompanyDto> getAll() {
+        return companyService.getAll();
     }
 
     @ExceptionHandler(CompanyAlreadyExistsException.class)

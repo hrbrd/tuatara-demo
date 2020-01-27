@@ -7,6 +7,8 @@ import pl.tuatara.demo.model.dto.UserDto;
 import pl.tuatara.demo.model.exception.UserAlreadyExistsException;
 import pl.tuatara.demo.service.UserService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -21,6 +23,11 @@ public class UserController {
     @PostMapping
     public void create(@RequestBody UserDto user) throws UserAlreadyExistsException {
         userService.create(user);
+    }
+
+    @GetMapping
+    public List<UserDto> getAll() {
+        return userService.getAll();
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)

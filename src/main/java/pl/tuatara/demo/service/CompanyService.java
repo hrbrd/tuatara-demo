@@ -8,6 +8,9 @@ import pl.tuatara.demo.model.entity.Company;
 import pl.tuatara.demo.model.entity.User;
 import pl.tuatara.demo.model.exception.CompanyAlreadyExistsException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CompanyService {
 
@@ -33,6 +36,12 @@ public class CompanyService {
         companyRepository.save(company);
     }
 
+    public List<CompanyDto> getAll() {
+        return companyRepository.findAll()
+                .stream().map(c -> convertToDto(c))
+                .collect(Collectors.toList());
+    }
+
     private Company convertToCompany(CompanyDto companyDto) {
         Company company = new Company();
         company.setName(companyDto.getName());
@@ -40,6 +49,15 @@ public class CompanyService {
         company.setLongitude(companyDto.getLongitude());
 
         return company;
+    }
+
+    private CompanyDto convertToDto(Company company) {
+        CompanyDto companyDto = new CompanyDto();
+        companyDto.setName(company.getName());
+        companyDto.setLatitude(company.getLatitude());
+        companyDto.setLongitude(company.getLongitude());
+
+        return companyDto;
     }
 
 }

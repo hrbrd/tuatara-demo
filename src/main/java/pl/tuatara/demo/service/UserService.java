@@ -7,6 +7,9 @@ import pl.tuatara.demo.model.dto.UserDto;
 import pl.tuatara.demo.model.entity.User;
 import pl.tuatara.demo.model.exception.UserAlreadyExistsException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserService {
 
@@ -23,12 +26,28 @@ public class UserService {
         userRepository.save(convertToUser(userDto));
     }
 
+    public List<UserDto> getAll() {
+        return userRepository.findAll()
+                .stream().map(u -> convertToDto(u))
+                .collect(Collectors.toList());
+    }
+
     private User convertToUser(UserDto userDto) {
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
+
         return user;
+    }
+
+    private UserDto convertToDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setUsername(user.getUsername());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+
+        return userDto;
     }
 
 }
