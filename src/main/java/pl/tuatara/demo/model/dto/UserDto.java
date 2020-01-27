@@ -1,5 +1,6 @@
 package pl.tuatara.demo.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import pl.tuatara.demo.model.entity.Company;
 import pl.tuatara.demo.serializer.CompanyListSerializer;
@@ -12,6 +13,7 @@ public class UserDto {
     private String lastName;
 
     @JsonSerialize(using = CompanyListSerializer.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Company> companies;
 
     public UserDto() {

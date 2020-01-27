@@ -52,8 +52,16 @@ public class CompanyService {
 
     public List<CompanyDto> getAll() {
         return companyRepository.findAll()
-                .stream().map(c -> convertToDto(c))
+                .stream().map(company -> {
+                    CompanyDto companyDto = convertToDto(company);
+                    companyDto.setUsers(null);
+                    return companyDto;
+                })
                 .collect(Collectors.toList());
+    }
+
+    public void delete(String name) {
+        companyRepository.deleteById(name);
     }
 
     private Company convertToCompany(CompanyDto companyDto) {

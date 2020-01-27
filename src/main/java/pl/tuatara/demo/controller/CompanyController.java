@@ -41,6 +41,11 @@ public class CompanyController {
         return companyService.getAll();
     }
 
+    @DeleteMapping("/{name}")
+    public void delete(@PathVariable String name) {
+        companyService.delete(name);
+    }
+
     @ExceptionHandler(CompanyAlreadyExistsException.class)
     public ResponseEntity handleCompanyAlreadyExistsException() {
         return ResponseEntity

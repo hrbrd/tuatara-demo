@@ -1,6 +1,5 @@
 package pl.tuatara.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.tuatara.demo.dao.UserRepository;
 import pl.tuatara.demo.model.dto.UserDto;
@@ -15,7 +14,6 @@ public class UserService {
 
     private UserRepository userRepository;
 
-    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -32,7 +30,11 @@ public class UserService {
 
     public List<UserDto> getAll() {
         return userRepository.findAll()
-                .stream().map(u -> convertToDto(u))
+                .stream().map(user -> {
+                    UserDto userDto = convertToDto(user);
+                    userDto.setCompanies(null);
+                    return userDto;
+                })
                 .collect(Collectors.toList());
     }
 
