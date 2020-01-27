@@ -20,6 +20,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public UserDto get(String username) {
+        return convertToDto(userRepository.findById(username).get());
+    }
+
     public void create(UserDto userDto) throws UserAlreadyExistsException {
         if(userRepository.existsById(userDto.getUsername()))
             throw new UserAlreadyExistsException();
@@ -46,6 +50,7 @@ public class UserService {
         userDto.setUsername(user.getUsername());
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
+        userDto.setCompanies(user.getCompanies());
 
         return userDto;
     }

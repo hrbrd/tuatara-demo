@@ -21,6 +21,11 @@ public class CompanyController {
         this.companyService = companyService;
     }
 
+    @GetMapping("/{name}")
+    public CompanyDto getCompany(@PathVariable String name) {
+        return companyService.get(name);
+    }
+
     @PostMapping
     public void create(@RequestBody CompanyDto company) throws CompanyAlreadyExistsException, InterruptedException, ApiException, IOException {
         companyService.create(company);

@@ -19,6 +19,11 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/{username}")
+    public UserDto getUser(@PathVariable String username) {
+        return userService.get(username);
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void create(@RequestBody UserDto user) throws UserAlreadyExistsException {

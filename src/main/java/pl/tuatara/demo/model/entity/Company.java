@@ -1,8 +1,6 @@
 package pl.tuatara.demo.model.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity(name = "companies")
@@ -17,6 +15,9 @@ public class Company {
     private Double longitude;
 
     @ManyToMany
+    @JoinTable(name = "companies_users",
+            joinColumns = @JoinColumn(name = "companies_name"),
+            inverseJoinColumns = @JoinColumn(name = "users_username"))
     private List<User> users;
 
     public Company() {

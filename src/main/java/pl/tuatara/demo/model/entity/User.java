@@ -14,7 +14,7 @@ public class User {
     private String firstName;
     private String lastName;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "users")
     private List<Company> companies;
 
     public User() {}

@@ -1,5 +1,11 @@
 package pl.tuatara.demo.model.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import pl.tuatara.demo.model.entity.User;
+import pl.tuatara.demo.serializer.UserListSerializer;
+
+import java.util.List;
+
 public class CompanyDto {
     private String name;
     private String street;
@@ -7,6 +13,9 @@ public class CompanyDto {
     private String country;
     private double latitude;
     private double longitude;
+
+    @JsonSerialize(using = UserListSerializer.class)
+    private List<User> users;
 
     public CompanyDto() {
 
@@ -58,5 +67,13 @@ public class CompanyDto {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

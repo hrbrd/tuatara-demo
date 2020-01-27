@@ -28,6 +28,10 @@ public class CompanyService {
         this.locationFetchingService = locationFetchingService;
     }
 
+    public CompanyDto get(String name) {
+        return convertToDto(companyRepository.findById(name).get());
+    }
+
     public void create(CompanyDto companyDto) throws CompanyAlreadyExistsException, InterruptedException, ApiException, IOException {
         if (companyRepository.existsById(companyDto.getName()))
             throw new CompanyAlreadyExistsException();
@@ -72,6 +76,7 @@ public class CompanyService {
         companyDto.setCountry(company.getCountry());
         companyDto.setLatitude(company.getLatitude());
         companyDto.setLongitude(company.getLongitude());
+        companyDto.setUsers(company.getUsers());
 
         return companyDto;
     }
