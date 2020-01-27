@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity handleUserAlreadyException() {
+    public ResponseEntity handleUserAlreadyExistsException() {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("This user already exists");
     }
 

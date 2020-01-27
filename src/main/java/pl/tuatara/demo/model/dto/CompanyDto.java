@@ -1,24 +1,12 @@
-package pl.tuatara.demo.model.entity;
+package pl.tuatara.demo.model.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Entity(name = "companies")
-public class Company {
-    @Id
+public class CompanyDto {
     private String name;
-
     private Double latitude;
     private Double longitude;
 
-    public Company() {
+    public CompanyDto() {
 
-    }
-
-    public Company(String name, Double latitude, Double longitude) {
-        this.name = name;
-        this.latitude = latitude;
-        this.longitude = longitude;
     }
 
     public String getName() {
