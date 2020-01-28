@@ -2,6 +2,8 @@ package pl.tuatara.demo.controller;
 
 import org.springframework.web.bind.annotation.*;
 import pl.tuatara.demo.model.dto.CompanyDto;
+import pl.tuatara.demo.model.exception.CompanyNotFoundException;
+import pl.tuatara.demo.model.exception.UserNotFoundException;
 import pl.tuatara.demo.service.ICompanyService;
 
 import javax.validation.Valid;
@@ -18,7 +20,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{name}")
-    public CompanyDto getCompany(@PathVariable String name) {
+    public CompanyDto get(@PathVariable String name) throws CompanyNotFoundException {
         return companyService.get(name);
     }
 
@@ -28,7 +30,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{name}/assign/{username}")
-    public void assignUser(@PathVariable String name, @PathVariable String username) {
+    public void assignUser(@PathVariable String name, @PathVariable String username) throws CompanyNotFoundException, UserNotFoundException {
         companyService.assignUser(name, username);
     }
 
@@ -38,7 +40,7 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{name}")
-    public void delete(@PathVariable String name) {
+    public void delete(@PathVariable String name) throws CompanyNotFoundException {
         companyService.delete(name);
     }
 

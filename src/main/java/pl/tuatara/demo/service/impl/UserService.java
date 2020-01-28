@@ -5,6 +5,7 @@ import pl.tuatara.demo.converter.UserConverter;
 import pl.tuatara.demo.dao.UserRepository;
 import pl.tuatara.demo.model.dto.UserDto;
 import pl.tuatara.demo.model.exception.UserAlreadyExistsException;
+import pl.tuatara.demo.model.exception.UserNotFoundException;
 import pl.tuatara.demo.service.IUserService;
 
 import java.util.List;
@@ -22,8 +23,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDto get(String username) {
-        return userConverter.convertToDto(userRepository.findById(username).get());
+    public UserDto get(String username) throws UserNotFoundException {
+        return userConverter.convertToDto(userRepository.findById(username).orElseThrow(() -> new UserNotFoundException()));
     }
 
     @Override

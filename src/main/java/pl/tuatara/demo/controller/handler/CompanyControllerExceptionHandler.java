@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pl.tuatara.demo.controller.CompanyController;
 import pl.tuatara.demo.model.exception.CompanyAlreadyExistsException;
+import pl.tuatara.demo.model.exception.CompanyNotFoundException;
 
 import java.io.IOException;
 
@@ -18,6 +19,13 @@ public class CompanyControllerExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body("This company already exists");
+    }
+
+    @ExceptionHandler(CompanyNotFoundException.class)
+    public ResponseEntity handleCompanyNotFoundException() {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("This company does not exists");
     }
 
     @ExceptionHandler({

@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.tuatara.demo.model.dto.UserDto;
 import pl.tuatara.demo.model.exception.UserAlreadyExistsException;
+import pl.tuatara.demo.model.exception.UserNotFoundException;
 import pl.tuatara.demo.service.IUserService;
 
 import javax.validation.Valid;
@@ -20,7 +21,7 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public UserDto getUser(@PathVariable String username) {
+    public UserDto getUser(@PathVariable String username) throws UserNotFoundException {
         return userService.get(username);
     }
 

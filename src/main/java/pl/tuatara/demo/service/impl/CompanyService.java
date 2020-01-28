@@ -9,6 +9,8 @@ import pl.tuatara.demo.model.dto.CompanyDto;
 import pl.tuatara.demo.model.entity.Company;
 import pl.tuatara.demo.model.entity.User;
 import pl.tuatara.demo.model.exception.CompanyAlreadyExistsException;
+import pl.tuatara.demo.model.exception.CompanyNotFoundException;
+import pl.tuatara.demo.model.exception.UserNotFoundException;
 import pl.tuatara.demo.service.ICompanyService;
 import pl.tuatara.demo.service.ILocationFetchingService;
 
@@ -32,8 +34,8 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public CompanyDto get(String name) {
-        return companyConverter.convertToDto(companyRepository.findById(name).get());
+    public CompanyDto get(String name) throws CompanyNotFoundException {
+        return companyConverter.convertToDto(companyRepository.findById(name).orElseThrow(() -> new CompanyNotFoundException()));
     }
 
     @Override
@@ -47,11 +49,10 @@ public class CompanyService implements ICompanyService {
         companyRepository.save(company);
     }
 
-    //    TODO exceptions
     @Override
-    public void assignUser(String name, String username) {
-        Company company = companyRepository.findById(name).get();
-        User user = userRepository.findById(username).get();
+    public void assignUser(String name, String username) throws CompanyNotFoundException, UserNotFoundException {
+        Company company = companyRepository.findById(name).orElseThrow(() -> new CompanyNotFoundException());
+        User user = userRepository.findById(username).orElseThrow(() -> new UserNotFoundException());;
         company.getUsers().add(user);
         companyRepository.save(company);
     }
@@ -68,7 +69,8 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public void delete(String name) {
+    public void delete(String name) throws CompanyNotFoundException {
+        companyRepository.findById(name).orElseThrow(() -> new CompanyNotFoundException());
         companyRepository.deleteById(name);
     }
 
