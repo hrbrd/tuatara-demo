@@ -1,4 +1,4 @@
-package pl.tuatara.demo.controller;
+package pl.tuatara.demo.controller.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
