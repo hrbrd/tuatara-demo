@@ -1,6 +1,17 @@
 version: "3.7"
 
 services:
+    app-container:
+        container_name: app-container
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        command: java -jar /tuatara-demo/target/demo-0.0.1-SNAPSHOT.jar
+        ports: 
+            - 8080:8080
+        networks:
+            - ntwrk
+
     postgres:
         container_name: postgres
         image: postgres:10.0
@@ -9,6 +20,8 @@ services:
         environment:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: postgres
+        networks:
+            - ntwrk
     
     pgadmin:
         container_name: pgadmin
@@ -18,3 +31,9 @@ services:
         environment:
             PGADMIN_DEFAULT_EMAIL: email@email
             PGADMIN_DEFAULT_PASSWORD: password
+        networks:
+            - ntwrk
+        
+networks:
+  ntwrk:    
+    driver: bridge
