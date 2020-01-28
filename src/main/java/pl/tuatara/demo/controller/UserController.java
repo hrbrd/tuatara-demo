@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.tuatara.demo.model.dto.UserDto;
 import pl.tuatara.demo.model.exception.UserAlreadyExistsException;
-import pl.tuatara.demo.service.UserService;
+import pl.tuatara.demo.service.IUserService;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    private UserService userService;
+    private IUserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(IUserService userService) {
         this.userService = userService;
     }
 

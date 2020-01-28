@@ -1,51 +1,54 @@
-package pl.tuatara.demo.service;
+package pl.tuatara.demo.service.impl;
 
-import com.google.maps.errors.ApiException;
-import com.google.maps.model.LatLng;
 import org.springframework.stereotype.Service;
 import pl.tuatara.demo.converter.CompanyConverter;
 import pl.tuatara.demo.dao.CompanyRepository;
 import pl.tuatara.demo.dao.UserRepository;
+import pl.tuatara.demo.model.Location;
 import pl.tuatara.demo.model.dto.CompanyDto;
 import pl.tuatara.demo.model.entity.Company;
 import pl.tuatara.demo.model.entity.User;
 import pl.tuatara.demo.model.exception.CompanyAlreadyExistsException;
+import pl.tuatara.demo.service.ICompanyService;
+import pl.tuatara.demo.service.ILocationFetchingService;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CompanyService {
+public class CompanyService implements ICompanyService {
 
     private CompanyRepository companyRepository;
     private UserRepository userRepository;
-    private LocationFetchingService locationFetchingService;
+    private ILocationFetchingService locationFetchingService;
     private CompanyConverter companyConverter;
 
     public CompanyService(CompanyRepository companyRepository, UserRepository userRepository,
-                          LocationFetchingService locationFetchingService, CompanyConverter companyConverter) {
+                          ILocationFetchingService locationFetchingService, CompanyConverter companyConverter) {
         this.companyRepository = companyRepository;
         this.userRepository = userRepository;
         this.locationFetchingService = locationFetchingService;
         this.companyConverter = companyConverter;
     }
 
+    @Override
     public CompanyDto get(String name) {
         return companyConverter.convertToDto(companyRepository.findById(name).get());
     }
 
-    public void create(CompanyDto companyDto) throws CompanyAlreadyExistsException, InterruptedException, ApiException, IOException {
+    @Override
+    public void create(CompanyDto companyDto) throws Exception {
         if (companyRepository.existsById(companyDto.getName()))
             throw new CompanyAlreadyExistsException();
-        LatLng location = locationFetchingService.getCompanyLocation(companyDto);
+        Location location = locationFetchingService.fetchLocation(companyDto);
         Company company = companyConverter.convertToCompany(companyDto);
-        company.setLatitude(location.lat);
-        company.setLongitude(location.lng);
+        company.setLatitude(location.getLatitude());
+        company.setLongitude(location.getLongitude());
         companyRepository.save(company);
     }
 
     //    TODO exceptions
+    @Override
     public void assignUser(String name, String username) {
         Company company = companyRepository.findById(name).get();
         User user = userRepository.findById(username).get();
@@ -53,6 +56,7 @@ public class CompanyService {
         companyRepository.save(company);
     }
 
+    @Override
     public List<CompanyDto> getAll() {
         return companyRepository.findAll()
                 .stream().map(company -> {
@@ -63,6 +67,7 @@ public class CompanyService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public void delete(String name) {
         companyRepository.deleteById(name);
     }

@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.tuatara.demo.model.dto.CompanyDto;
 import pl.tuatara.demo.model.exception.CompanyAlreadyExistsException;
-import pl.tuatara.demo.service.CompanyService;
+import pl.tuatara.demo.service.ICompanyService;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,9 +15,9 @@ import java.util.List;
 @RequestMapping("/companies")
 public class CompanyController {
 
-    private CompanyService companyService;
+    private ICompanyService companyService;
 
-    public CompanyController(CompanyService companyService) {
+    public CompanyController(ICompanyService companyService) {
         this.companyService = companyService;
     }
 
@@ -27,7 +27,7 @@ public class CompanyController {
     }
 
     @PostMapping
-    public void create(@RequestBody CompanyDto company) throws CompanyAlreadyExistsException, InterruptedException, ApiException, IOException {
+    public void create(@RequestBody CompanyDto company) throws Exception {
         companyService.create(company);
     }
 
