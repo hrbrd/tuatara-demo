@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.tuatara.demo.model.dto.CompanyDto;
 import pl.tuatara.demo.model.exception.CompanyNotFoundException;
+import pl.tuatara.demo.model.exception.UserAlreadyAssignedException;
 import pl.tuatara.demo.model.exception.UserNotFoundException;
 import pl.tuatara.demo.service.ICompanyService;
 
@@ -20,9 +21,9 @@ public class CompanyController {
         this.companyService = companyService;
     }
 
-    @GetMapping("/{name}")
-    public CompanyDto get(@PathVariable String name) throws CompanyNotFoundException {
-        return companyService.get(name);
+    @GetMapping("/{companyName}")
+    public CompanyDto get(@PathVariable String companyName) throws CompanyNotFoundException {
+        return companyService.get(companyName);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -31,9 +32,9 @@ public class CompanyController {
         companyService.create(company);
     }
 
-    @PutMapping("/{name}/assign/{username}")
-    public void assignUser(@PathVariable String name, @PathVariable String username) throws CompanyNotFoundException, UserNotFoundException {
-        companyService.assignUser(name, username);
+    @PutMapping("/{companyName}/assign/{username}")
+    public void assignUser(@PathVariable String companyName, @PathVariable String username) throws CompanyNotFoundException, UserNotFoundException, UserAlreadyAssignedException {
+        companyService.assignUser(companyName, username);
     }
 
     @GetMapping
@@ -41,9 +42,9 @@ public class CompanyController {
         return companyService.getAll();
     }
 
-    @DeleteMapping("/{name}")
-    public void delete(@PathVariable String name) throws CompanyNotFoundException {
-        companyService.delete(name);
+    @DeleteMapping("/{companyName}")
+    public void delete(@PathVariable String companyName) throws CompanyNotFoundException {
+        companyService.delete(companyName);
     }
 
 }

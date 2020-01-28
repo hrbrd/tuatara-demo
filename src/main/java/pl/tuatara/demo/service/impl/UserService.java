@@ -24,13 +24,13 @@ public class UserService implements IUserService {
 
     @Override
     public UserDto get(String username) throws UserNotFoundException {
-        return userConverter.convertToDto(userRepository.findById(username).orElseThrow(() -> new UserNotFoundException()));
+        return userConverter.convertToDto(userRepository.findById(username).orElseThrow(() -> new UserNotFoundException(username)));
     }
 
     @Override
     public void create(UserDto userDto) throws UserAlreadyExistsException {
         if(userRepository.existsById(userDto.getUsername()))
-            throw new UserAlreadyExistsException();
+            throw new UserAlreadyExistsException(userDto.getUsername());
         userRepository.save(userConverter.convertToUser(userDto));
     }
 

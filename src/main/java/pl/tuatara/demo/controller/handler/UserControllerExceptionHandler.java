@@ -13,13 +13,11 @@ import java.util.Date;
 @ControllerAdvice(assignableTypes = UserController.class)
 public class UserControllerExceptionHandler {
 
-    private static final String USER_ALREADY_EXISTS_MESSAGE = "User with this username already exists";
-
     @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity handleUserAlreadyExistsException() {
+    public ResponseEntity handleUserAlreadyExistsException(UserAlreadyExistsException exception) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(new ExceptionDetails(new Date(), USER_ALREADY_EXISTS_MESSAGE));
+                .body(new ExceptionDetails(new Date(), exception.getMessage()));
     }
 
 }

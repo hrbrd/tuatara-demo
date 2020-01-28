@@ -10,6 +10,7 @@ import pl.tuatara.demo.model.entity.Company;
 import pl.tuatara.demo.model.entity.User;
 import pl.tuatara.demo.model.exception.CompanyAlreadyExistsException;
 import pl.tuatara.demo.model.exception.CompanyNotFoundException;
+import pl.tuatara.demo.model.exception.UserAlreadyAssignedException;
 import pl.tuatara.demo.model.exception.UserNotFoundException;
 import pl.tuatara.demo.service.ICompanyService;
 import pl.tuatara.demo.service.ILocationFetchingService;
@@ -34,14 +35,14 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public CompanyDto get(String name) throws CompanyNotFoundException {
-        return companyConverter.convertToDto(companyRepository.findById(name).orElseThrow(() -> new CompanyNotFoundException()));
+    public CompanyDto get(String companyName) throws CompanyNotFoundException {
+        return companyConverter.convertToDto(companyRepository.findById(companyName).orElseThrow(() -> new CompanyNotFoundException(companyName)));
     }
 
     @Override
     public void create(CompanyDto companyDto) throws Exception {
         if (companyRepository.existsById(companyDto.getName()))
-            throw new CompanyAlreadyExistsException();
+            throw new CompanyAlreadyExistsException(companyDto.getName());
         Location location = locationFetchingService.fetchLocation(companyDto);
         Company company = companyConverter.convertToCompany(companyDto);
         company.setLatitude(location.getLatitude());
@@ -50,9 +51,11 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public void assignUser(String name, String username) throws CompanyNotFoundException, UserNotFoundException {
-        Company company = companyRepository.findById(name).orElseThrow(() -> new CompanyNotFoundException());
-        User user = userRepository.findById(username).orElseThrow(() -> new UserNotFoundException());;
+    public void assignUser(String companyName, String username) throws CompanyNotFoundException, UserNotFoundException, UserAlreadyAssignedException {
+        Company company = companyRepository.findById(companyName).orElseThrow(() -> new CompanyNotFoundException(companyName));
+        User user = userRepository.findById(username).orElseThrow(() -> new UserNotFoundException(username));
+        if(company.getUsers().stream().map(u -> u.getUsername()).anyMatch(u -> u.equals(username)))
+            throw new UserAlreadyAssignedException(username, companyName);
         company.getUsers().add(user);
         companyRepository.save(company);
     }
@@ -69,9 +72,9 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public void delete(String name) throws CompanyNotFoundException {
-        companyRepository.findById(name).orElseThrow(() -> new CompanyNotFoundException());
-        companyRepository.deleteById(name);
+    public void delete(String companyName) throws CompanyNotFoundException {
+        companyRepository.findById(companyName).orElseThrow(() -> new CompanyNotFoundException(companyName));
+        companyRepository.deleteById(companyName);
     }
 
 }

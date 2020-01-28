@@ -14,7 +14,6 @@ import java.util.Date;
 public class ControllerExceptionHandler {
 
     private static final String EMPTY_FIELDS_ERROR_MESSAGE = "Fields cannot be empty, please fill all fields";
-    private static final String USER_NOT_FOUND_MESSAGE = "User with this username does not exists";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity handleMethodArgumentNotValidException() {
@@ -24,10 +23,10 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity handleUserNotFoundException() {
+    public ResponseEntity handleUserNotFoundException(UserNotFoundException exception) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(new ExceptionDetails(new Date(), USER_NOT_FOUND_MESSAGE));
+                .body(new ExceptionDetails(new Date(), exception.getMessage()));
     }
 
 }

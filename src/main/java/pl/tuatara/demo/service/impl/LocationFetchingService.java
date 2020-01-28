@@ -36,7 +36,7 @@ public class LocationFetchingService implements ILocationFetchingService {
                 String.format("%s %s %s %s", company.getName(), company.getStreet(), company.getCity(), company.getCountry()))
                 .await();
         if(results.length == 0 || results == null)
-            throw new LocationNotFoundException();
+            throw new LocationNotFoundException(company.getName());
         LatLng location = results[0].geometry.location;
         return new Location(location.lat, location.lng);
     }
