@@ -1,5 +1,6 @@
 package pl.tuatara.demo.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.tuatara.demo.model.dto.CompanyDto;
 import pl.tuatara.demo.model.exception.CompanyNotFoundException;
@@ -24,6 +25,7 @@ public class CompanyController {
         return companyService.get(name);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void create(@RequestBody @Valid CompanyDto company) throws Exception {
         companyService.create(company);

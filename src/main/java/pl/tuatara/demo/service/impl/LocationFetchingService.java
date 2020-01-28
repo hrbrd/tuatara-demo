@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pl.tuatara.demo.model.Location;
 import pl.tuatara.demo.model.dto.CompanyDto;
+import pl.tuatara.demo.model.exception.LocationNotFoundException;
 import pl.tuatara.demo.service.ILocationFetchingService;
 
 import javax.annotation.PostConstruct;
@@ -30,13 +31,13 @@ public class LocationFetchingService implements ILocationFetchingService {
     }
 
     @Override
-    public Location fetchLocation(CompanyDto company) throws InterruptedException, ApiException, IOException {
+    public Location fetchLocation(CompanyDto company) throws InterruptedException, ApiException, IOException, LocationNotFoundException {
         GeocodingResult[] results = GeocodingApi.geocode(context,
                 String.format("%s %s %s %s", company.getName(), company.getStreet(), company.getCity(), company.getCountry()))
                 .await();
+        if(results.length == 0 || results == null)
+            throw new LocationNotFoundException();
         LatLng location = results[0].geometry.location;
-//        if(results == null)
-//            throw new Exception();
         return new Location(location.lat, location.lng);
     }
 
