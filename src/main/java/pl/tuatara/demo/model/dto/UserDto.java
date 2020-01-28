@@ -1,5 +1,6 @@
 package pl.tuatara.demo.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import pl.tuatara.demo.model.entity.Company;
@@ -53,6 +54,7 @@ public class UserDto {
         return companies;
     }
 
+    @JsonIgnore
     public void setCompanies(List<Company> companies) {
         this.companies = companies;
     }
