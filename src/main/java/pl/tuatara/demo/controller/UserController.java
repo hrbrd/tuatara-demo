@@ -10,7 +10,7 @@ import pl.tuatara.demo.service.IUserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     private IUserService userService;

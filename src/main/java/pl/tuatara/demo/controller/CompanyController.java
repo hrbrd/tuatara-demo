@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/companies")
+@RequestMapping("/api/v1/companies")
 public class CompanyController {
 
     private ICompanyService companyService;
