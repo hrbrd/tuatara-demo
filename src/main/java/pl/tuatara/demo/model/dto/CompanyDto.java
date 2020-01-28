@@ -5,13 +5,23 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import pl.tuatara.demo.model.entity.User;
 import pl.tuatara.demo.serializer.UserListSerializer;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 public class CompanyDto {
+
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String street;
+
+    @NotBlank
     private String city;
+
+    @NotBlank
     private String country;
+
     private double latitude;
     private double longitude;
 
@@ -19,9 +29,7 @@ public class CompanyDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<User> users;
 
-    public CompanyDto() {
-
-    }
+    public CompanyDto() { }
 
     public String getName() {
         return name;

@@ -5,19 +5,25 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import pl.tuatara.demo.model.entity.Company;
 import pl.tuatara.demo.serializer.CompanyListSerializer;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 public class UserDto {
+
+    @NotBlank
     private String username;
+
+    @NotBlank
     private String firstName;
+
+    @NotBlank
     private String lastName;
 
     @JsonSerialize(using = CompanyListSerializer.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Company> companies;
 
-    public UserDto() {
-    }
+    public UserDto() { }
 
     public String getUsername() {
         return username;

@@ -8,6 +8,7 @@ import pl.tuatara.demo.model.dto.CompanyDto;
 import pl.tuatara.demo.model.exception.CompanyAlreadyExistsException;
 import pl.tuatara.demo.service.ICompanyService;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class CompanyController {
     }
 
     @PostMapping
-    public void create(@RequestBody CompanyDto company) throws Exception {
+    public void create(@RequestBody @Valid CompanyDto company) throws Exception {
         companyService.create(company);
     }
 
